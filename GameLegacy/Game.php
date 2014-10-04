@@ -176,3 +176,4 @@ class Game {
 		return !($this->purses[$this->currentPlayer] == 6);
 	}
 }
+
