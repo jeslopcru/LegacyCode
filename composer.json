@@ -1,0 +1,16 @@
+{
+    "name": "jeslopcru/legacyCode",
+    "description": "degacy code project Refactoring",
+    "minimum-stability": "dev",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "jesuslc",
+            "email": "jeslopcru@gmail.com"
+        }
+    ],
+    "require": {
+        "phpunit/phpunit": "3.7.37",
+        "mockery/mockery": "0.9.2"
+    }
+}
