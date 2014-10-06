@@ -4,11 +4,12 @@ class GameRunnerTest extends PHPUnit_Framework_TestCase
 {
     function testGenerateOutput()
     {
-        $this->generateManyOutputs(20, '/tmp/LegacyGameOutputA.txt');
-        $this->generateManyOutputs(20, '/tmp/LegacyGameOutputB.txt');
+        $times = 20000;
+        $this->generateManyOutputs($times, '/tmp/LegacyGameOutputA.txt');
+        $this->generateManyOutputs($times, '/tmp/LegacyGameOutputB.txt');
         $outputA = file_get_contents('/tmp/LegacyGameOutputA.txt');
         $outputB = file_get_contents('/tmp/LegacyGameOutputB.txt');
-        $this->assertEquals($outputA, $outputB);
+        $this->assertTrue($outputA == $outputB);
     }
 
     private function generateManyOutputs($times, $fileName)
@@ -16,19 +17,19 @@ class GameRunnerTest extends PHPUnit_Framework_TestCase
         $itsFirst = true;
         while ($times) {
             if ($itsFirst) {
-                file_put_contents($fileName, $this->generateOutput());
+                file_put_contents($fileName, $this->generateOutput($times));
                 $itsFirst = false;
             } else {
-                file_put_contents($fileName, $this->generateOutput(), FILE_APPEND);
+                file_put_contents($fileName, $this->generateOutput($times), FILE_APPEND);
             }
             $times--;
         }
     }
 
-    protected function generateOutput()
+    protected function generateOutput($seed)
     {
         ob_start();
-        srand(0);
+        srand($seed);
         require __DIR__ . '/../GameLegacy/GameRunner.php';
         $output = ob_get_contents();
         ob_end_clean();
