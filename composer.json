@@ -1,5 +1,5 @@
 {
-    "name": "jeslopcru/legacyCode",
+    "name": "jeslopcru/legacy-code",
     "description": "degacy code project Refactoring",
     "minimum-stability": "dev",
     "license": "proprietary",
@@ -9,7 +9,14 @@
             "email": "jeslopcru@gmail.com"
         }
     ],
-    "require": {
+    "autoload": {
+        "psr-4" : {
+            "GameLegacy\\": "GameLegacy/"
+        },
+        "classmap": ["GameLegacy/"]
+
+    },
+        "require": {
         "phpunit/phpunit": "3.7.37",
         "mockery/mockery": "0.9.2"
     }
