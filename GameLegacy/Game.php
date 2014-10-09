@@ -127,35 +127,40 @@ class Game
 
     function currentCategory()
     {
+        $popCategory = "Pop";
+        $scienceCategory = "Science";
+        $sportsCategory = "Sports";
+        $rockCategory = "Rock";
+
         if ($this->places[$this->currentPlayer] == 0) {
-            return "Pop";
+            return $popCategory;
         }
         if ($this->places[$this->currentPlayer] == 4) {
-            return "Pop";
+            return $popCategory;
         }
         if ($this->places[$this->currentPlayer] == 8) {
-            return "Pop";
+            return $popCategory;
         }
         if ($this->places[$this->currentPlayer] == 1) {
-            return "Science";
+            return $scienceCategory;
         }
         if ($this->places[$this->currentPlayer] == 5) {
-            return "Science";
+            return $scienceCategory;
         }
         if ($this->places[$this->currentPlayer] == 9) {
-            return "Science";
+            return $scienceCategory;
         }
         if ($this->places[$this->currentPlayer] == 2) {
-            return "Sports";
+            return $sportsCategory;
         }
         if ($this->places[$this->currentPlayer] == 6) {
-            return "Sports";
+            return $sportsCategory;
         }
         if ($this->places[$this->currentPlayer] == 10) {
-            return "Sports";
+            return $sportsCategory;
         }
 
-        return "Rock";
+        return $rockCategory;
     }
 
     function wasCorrectlyAnswered()
