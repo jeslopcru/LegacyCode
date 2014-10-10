@@ -1,6 +1,6 @@
 <?php
+require __DIR__ . '/../vendor/autoload.php';
 
-include_once __DIR__ . '/Game.php';
 
 $notAWinner;
 
@@ -11,10 +11,13 @@ $aGame->add("Pat");
 $aGame->add("Sue");
 
 do {
+    $dice = rand(0, 5) + 1;
+    $aGame->roll($dice);
 
-    $aGame->roll(rand(0, 5) + 1);
-
-    if (rand(0, 9) == 7) {
+    $minAnswerId = 0;
+    $maxAnswerId = 9;
+    $wrongAnswerId = 7;
+    if (rand($minAnswerId, $maxAnswerId) == $wrongAnswerId)  {
         $notAWinner = $aGame->wrongAnswer();
     } else {
         $notAWinner = $aGame->wasCorrectlyAnswered();

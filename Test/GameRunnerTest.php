@@ -2,8 +2,20 @@
 
 class GameRunnerTest extends PHPUnit_Framework_TestCase
 {
+    function testOutputMatchWithMaster()
+    {
+        $masterOutput = __DIR__ . '/../MasterOutput.txt';
+        $times = 20000;
+        $actualPath = '/tmp/actual.txt';
+        $this->generateManyOutputs($times, $actualPath);
+        $fileContentMaster = sha1(file_get_contents($masterOutput));
+        $fileContentActualOutput = sha1(file_get_contents($actualPath));
+        $this->assertEquals($fileContentMaster , $fileContentActualOutput);
+    }
+
     function testGenerateOutput()
     {
+        $this->markTestSkipped();
         $times = 20000;
         $this->generateManyOutputs($times, '/tmp/LegacyGameOutputA.txt');
         $this->generateManyOutputs($times, '/tmp/LegacyGameOutputB.txt');
