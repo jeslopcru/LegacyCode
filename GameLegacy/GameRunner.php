@@ -12,7 +12,8 @@ $aGame->add("Sue");
 
 do {
 
-    $aGame->roll(rand(0, 5) + 1);
+    $dice = rand(0, 5) + 1;
+    $aGame->roll($dice);
 
     if (rand(0, 9) == 7) {
         $notAWinner = $aGame->wrongAnswer();
