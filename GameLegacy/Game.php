@@ -43,7 +43,9 @@ class Game
 
     function isPlayable()
     {
-        return ($this->howManyPlayers() >= 2);
+        $minimalNumberOfPlayer = 2;
+
+        return ($this->howManyPlayers() >= $minimalNumberOfPlayer);
     }
 
     function add($playerName)
@@ -68,15 +70,16 @@ class Game
     {
         echoln($this->players[$this->currentPlayer] . " is the current player");
         echoln("They have rolled a " . $roll);
-
+        $boardSize = 12;
+        $lastPositionOnTheBoard = 11;
         if ($this->inPenaltyBox[$this->currentPlayer]) {
             if ($roll % 2 != 0) {
                 $this->isGettingOutOfPenaltyBox = true;
 
                 echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
                 $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
-                if ($this->places[$this->currentPlayer] > 11) {
-                    $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
+                if ($this->places[$this->currentPlayer] > $lastPositionOnTheBoard) {
+                    $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - $boardSize;
                 }
 
                 echoln(
@@ -94,8 +97,8 @@ class Game
         } else {
 
             $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
-            if ($this->places[$this->currentPlayer] > 11) {
-                $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
+            if ($this->places[$this->currentPlayer] > $lastPositionOnTheBoard) {
+                $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - $boardSize;
             }
 
             echoln(
