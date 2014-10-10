@@ -235,7 +235,9 @@ class Game
 
     function didPlayerWin()
     {
-        return !($this->purses[$this->currentPlayer] == 6);
+        $winningScore = 6;
+
+        return !($this->purses[$this->currentPlayer] == $winningScore);
     }
 }
 
