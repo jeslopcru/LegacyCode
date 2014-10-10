@@ -32,7 +32,8 @@ class Game
         $this->sportsQuestions = array();
         $this->rockQuestions = array();
 
-        for ($i = 0; $i < 50; $i++) {
+        $categorySize = 50;
+        for ($i = 0; $i < $categorySize; $i++) {
             array_push($this->popQuestions, "Pop Question " . $i);
             array_push($this->scienceQuestions, "Science Question " . $i);
             array_push($this->sportsQuestions, "Sports Question " . $i);
