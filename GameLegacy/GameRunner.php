@@ -17,7 +17,7 @@ do {
     $minAnswerId = 0;
     $maxAnswerId = 9;
     $wrongAnswerId = 7;
-    if (rand($minAnswerId, $maxAnswerId) == $wrongAnswerId)  {
+    if (rand($minAnswerId, $maxAnswerId) == $wrongAnswerId) {
         $notAWinner = $aGame->wrongAnswer();
     } else {
         $notAWinner = $aGame->wasCorrectlyAnswered();

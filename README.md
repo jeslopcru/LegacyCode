@@ -9,3 +9,5 @@ Refactoring a PHP Legacy code application without tests.
 ### Phases
 - Initial -> start the refactoring project
 - First Output Test -> Create first test save the output to a file
+- Constant and magic string -> Autoload and extract variables.
+- Complex Conditional -> To be simple
