@@ -15,10 +15,7 @@ function run()
         $dice = rand(0, 5) + 1;
         $aGame->roll($dice);
 
-        $minAnswerId = 0;
-        $maxAnswerId = 9;
-        $wrongAnswerId = 7;
-        if (isWrongAnswer($minAnswerId, $maxAnswerId, $wrongAnswerId)) {
+        if (!isCorrectAnswer()) {
             $notAWinner = $aGame->wrongAnswer();
         } else {
             $notAWinner = $aGame->wasCorrectlyAnswered();
@@ -27,8 +24,11 @@ function run()
     } while ($notAWinner);
 }
 
-function isWrongAnswer($minAnswerId, $maxAnswerId, $wrongAnswerId)
+function isCorrectAnswer()
 {
-    return rand($minAnswerId, $maxAnswerId) == $wrongAnswerId;
+    $minAnswerId = 0;
+    $maxAnswerId = 9;
+    $wrongAnswerId = 7;
+    return rand($minAnswerId, $maxAnswerId) != $wrongAnswerId;
 }
 
