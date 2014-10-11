@@ -1,4 +1,5 @@
 <?php
+include __DIR__ . '/../GameLegacy/GameRunner.php';
 
 class GameRunnerTest extends PHPUnit_Framework_TestCase
 {
@@ -42,7 +43,7 @@ class GameRunnerTest extends PHPUnit_Framework_TestCase
     {
         ob_start();
         srand($seed);
-        require __DIR__ . '/../GameLegacy/GameRunner.php';
+        run();
         $output = ob_get_contents();
         ob_end_clean();
 
