@@ -73,7 +73,7 @@ class Game
         $boardSize = 12;
         $lastPositionOnTheBoard = 11;
         if ($this->inPenaltyBox[$this->currentPlayer]) {
-            if ($roll % 2 != 0) {
+            if ($this->isOdd($roll)) {
                 $this->isGettingOutOfPenaltyBox = true;
 
                 echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
@@ -238,6 +238,11 @@ class Game
         $winningScore = 6;
 
         return !($this->purses[$this->currentPlayer] == $winningScore);
+    }
+
+    protected function isOdd($roll)
+    {
+        return $roll % 2 != 0;
     }
 }
 
