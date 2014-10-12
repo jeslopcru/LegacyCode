@@ -71,14 +71,13 @@ class Game
         echoln($this->players[$this->currentPlayer] . " is the current player");
         echoln("They have rolled a " . $roll);
         $boardSize = 12;
-        $lastPositionOnTheBoard = 11;
         if ($this->inPenaltyBox[$this->currentPlayer]) {
             if ($this->isOdd($roll)) {
                 $this->isGettingOutOfPenaltyBox = true;
 
                 echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
                 $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
-                if ($this->places[$this->currentPlayer] > $lastPositionOnTheBoard) {
+                if ($this->playerShouldStartANewLap()) {
                     $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - $boardSize;
                 }
 
@@ -97,7 +96,7 @@ class Game
         } else {
 
             $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
-            if ($this->places[$this->currentPlayer] > $lastPositionOnTheBoard) {
+            if ($this->playerShouldStartANewLap()) {
                 $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - $boardSize;
             }
 
@@ -182,14 +181,14 @@ class Game
 
                 $winner = $this->didPlayerWin();
                 $this->currentPlayer++;
-                if ($this->currentPlayer == count($this->players)) {
+                if ($this->shoudResetCurrentPlayer()) {
                     $this->currentPlayer = 0;
                 }
 
                 return $winner;
             } else {
                 $this->currentPlayer++;
-                if ($this->currentPlayer == count($this->players)) {
+                if ($this->shoudResetCurrentPlayer()) {
                     $this->currentPlayer = 0;
                 }
 
@@ -210,7 +209,7 @@ class Game
 
             $winner = $this->didPlayerWin();
             $this->currentPlayer++;
-            if ($this->currentPlayer == count($this->players)) {
+            if ($this->shoudResetCurrentPlayer()) {
                 $this->currentPlayer = 0;
             }
 
@@ -225,7 +224,7 @@ class Game
         $this->inPenaltyBox[$this->currentPlayer] = true;
 
         $this->currentPlayer++;
-        if ($this->currentPlayer == count($this->players)) {
+        if ($this->shoudResetCurrentPlayer()) {
             $this->currentPlayer = 0;
         }
 
@@ -243,6 +242,18 @@ class Game
     protected function isOdd($roll)
     {
         return $roll % 2 != 0;
+    }
+
+    protected function playerShouldStartANewLap()
+    {
+        $lastPositionOnTheBoard = 11;
+
+        return $this->places[$this->currentPlayer] > $lastPositionOnTheBoard;
+    }
+
+    protected function shoudResetCurrentPlayer()
+    {
+        return $this->currentPlayer == count($this->players);
     }
 }
 
