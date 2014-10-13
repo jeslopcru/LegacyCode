@@ -24,10 +24,8 @@ function run()
     } while ($notAWinner);
 }
 
-function isCorrectAnswer()
+function isCorrectAnswer($minAnswerId = 0,$maxAnswerId = 9)
 {
-    $minAnswerId = 0;
-    $maxAnswerId = 9;
     $wrongAnswerId = 7;
     return rand($minAnswerId, $maxAnswerId) != $wrongAnswerId;
 }
