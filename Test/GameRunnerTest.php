@@ -3,19 +3,23 @@ include __DIR__ . '/../GameLegacy/GameRunner.php';
 
 class GameRunnerTest extends PHPUnit_Framework_TestCase
 {
-
     function testCanFindCorrectAnswer()
     {
-        $correctAnswerId = [0, 1, 2, 3, 4, 5, 6, 8, 9];
+        $correctAnswerId = $this->getGoodAnswerId();
         $this->assertAnswersAreCorrectFor($correctAnswerId);
+    }
+
+    protected function getGoodAnswerId()
+    {
+        return [0, 1, 2, 3, 4, 5, 6, 8, 9];
     }
 
     function testCanFindWrongAnswer()
     {
-        $this->assertFalse(isCorrectAnswer(7, 7));
+        $this->assertFalse(isCorrectAnswer(WRONG_ANSWER_ID, WRONG_ANSWER_ID));
     }
 
-    protected  function assertAnswersAreCorrectFor($correctAnswerIDs)
+    protected function assertAnswersAreCorrectFor($correctAnswerIDs)
     {
         foreach ($correctAnswerIDs as $id) {
             $this->assertTrue(isCorrectAnswer($id, $id));
