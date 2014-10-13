@@ -35,7 +35,7 @@ class GameRunnerTest extends PHPUnit_Framework_TestCase
         $this->generateManyOutputs($times, $actualPath);
         $fileContentMaster = sha1(file_get_contents($masterOutput));
         $fileContentActualOutput = sha1(file_get_contents($actualPath));
-        $this->assertEquals($fileContentMaster , $fileContentActualOutput);
+        $this->assertEquals($fileContentMaster, $fileContentActualOutput);
     }
 
     function testGenerateOutput()
