@@ -5,8 +5,7 @@ class GameRunnerTest extends PHPUnit_Framework_TestCase
 {
     function testCanFindCorrectAnswer()
     {
-        $correctAnswerId = $this->getGoodAnswerId();
-        $this->assertAnswersAreCorrectFor($correctAnswerId);
+        $this->assertAnswersAreCorrectFor($this->getGoodAnswerId());
     }
 
     protected function getGoodAnswerId()
