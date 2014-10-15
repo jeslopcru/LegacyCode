@@ -22,7 +22,7 @@ function run()
 
 function didSomeoneWin($aGame, $isCorrectAnswer)
 {
-    if (!$isCorrectAnswer) {
+    if ($isCorrectAnswer) {
         return $aGame->wrongAnswer();
     } else {
         return $aGame->wasCorrectlyAnswered();
