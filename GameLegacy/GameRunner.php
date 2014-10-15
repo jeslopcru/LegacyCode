@@ -19,9 +19,7 @@ function run()
         $dice = rand(0, 5) + 1;
         $aGame->roll($dice);
 
-        $notAWinner = getNotAwinner($aGame,isCorrectAnswer());
-
-    } while ($notAWinner);
+    } while (getNotAwinner($aGame,isCorrectAnswer()));
 }
 
 function getNotAwinner($aGame, $isCorrectAnswer)
