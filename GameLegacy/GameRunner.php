@@ -19,13 +19,22 @@ function run()
         $dice = rand(0, 5) + 1;
         $aGame->roll($dice);
 
-        if (!isCorrectAnswer()) {
-            $notAWinner = $aGame->wrongAnswer();
-        } else {
-            $notAWinner = $aGame->wasCorrectlyAnswered();
-        }
+        $notAWinner = getNotAwinner($aGame,isCorrectAnswer());
 
     } while ($notAWinner);
+}
+
+function getNotAwinner($aGame, $isCorrectAnswer)
+{
+    if (!$isCorrectAnswer) {
+        $notAWinner = $aGame->wrongAnswer();
+
+        return $notAWinner;
+    } else {
+        $notAWinner = $aGame->wasCorrectlyAnswered();
+
+        return $notAWinner;
+    }
 }
 
 function isCorrectAnswer($minAnswerId = MIN_ANSWER_ID,$maxAnswerId = MAX_ANSWER_ID)

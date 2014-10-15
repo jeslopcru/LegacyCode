@@ -3,7 +3,7 @@ include __DIR__ . '/../GameLegacy/GameRunner.php';
 
 class GameRunnerTest extends PHPUnit_Framework_TestCase
 {
-    function testCanFindCorrectAnswer()
+    public function testCanFindCorrectAnswer()
     {
         $this->assertAnswersAreCorrectFor($this->getGoodAnswerId());
     }
@@ -23,6 +23,33 @@ class GameRunnerTest extends PHPUnit_Framework_TestCase
         foreach ($correctAnswerIDs as $id) {
             $this->assertTrue(isCorrectAnswer($id, $id));
         }
+    }
+
+    public function testWhenCorrectAnswerIsProviderItCanTellIfThereIsNoWinner()
+    {
+        $isCorrectAnswer = true;
+
+        $mockGame = \Mockery::mock('Game');
+        $mockGame->shouldReceive('wasCorrectlyAnswered')
+            ->andReturn($isCorrectAnswer);
+
+        $this->assertTrue(getNotAwinner($mockGame, $isCorrectAnswer));
+    }
+
+    public function testWhenAWrongAnswerIsProvidedItCanTellIfThereIsNoWinner()
+    {
+        $isCorrectAnswer = false;
+
+        $mockGame = \Mockery::mock('Game');
+        $mockGame->shouldReceive('wrongAnswer')
+            ->andReturn($isCorrectAnswer);
+
+        $this->assertFalse(getNotAwinner($mockGame, $isCorrectAnswer));
+    }
+
+    public function tearDown()
+    {
+        Mockery::close();
     }
 
     function testOutputMatchWithMaster()
