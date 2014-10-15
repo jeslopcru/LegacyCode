@@ -11,7 +11,7 @@ class GameRunnerTest extends PHPUnit_Framework_TestCase
 
     protected function getGoodAnswerId()
     {
-        return [0, 1, 2, 3, 4, 5, 6, 8, 9];
+        return array_diff(range(0,9), [WRONG_ANSWER_ID]);
     }
 
     function testCanFindWrongAnswer()
