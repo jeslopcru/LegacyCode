@@ -33,7 +33,7 @@ class GameRunnerTest extends PHPUnit_Framework_TestCase
         $mockGame->shouldReceive('wasCorrectlyAnswered')
             ->andReturn($isCorrectAnswer);
 
-        $this->assertTrue(getNotAwinner($mockGame, $isCorrectAnswer));
+        $this->assertTrue(didSomeoneWin($mockGame, $isCorrectAnswer));
     }
 
     public function testWhenAWrongAnswerIsProvidedItCanTellIfThereIsNoWinner()
@@ -44,7 +44,7 @@ class GameRunnerTest extends PHPUnit_Framework_TestCase
         $mockGame->shouldReceive('wrongAnswer')
             ->andReturn($isCorrectAnswer);
 
-        $this->assertFalse(getNotAwinner($mockGame, $isCorrectAnswer));
+        $this->assertFalse(didSomeoneWin($mockGame, $isCorrectAnswer));
     }
 
     public function tearDown()
