@@ -27,13 +27,9 @@ function run()
 function getNotAwinner($aGame, $isCorrectAnswer)
 {
     if (!$isCorrectAnswer) {
-        $notAWinner = $aGame->wrongAnswer();
-
-        return $notAWinner;
+        return $aGame->wrongAnswer();
     } else {
-        $notAWinner = $aGame->wasCorrectlyAnswered();
-
-        return $notAWinner;
+        return $aGame->wasCorrectlyAnswered();
     }
 }
 
