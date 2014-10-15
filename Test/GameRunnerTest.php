@@ -27,7 +27,7 @@ class GameRunnerTest extends PHPUnit_Framework_TestCase
 
     public function testWhenCorrectAnswerIsProviderItCanTellIfThereIsNoWinner()
     {
-        $isCorrectAnswer = true;
+        $isCorrectAnswer = false;
 
         $mockGame = \Mockery::mock('Game');
         $mockGame->shouldReceive('wasCorrectlyAnswered')
@@ -38,7 +38,7 @@ class GameRunnerTest extends PHPUnit_Framework_TestCase
 
     public function testWhenAWrongAnswerIsProvidedItCanTellIfThereIsNoWinner()
     {
-        $isCorrectAnswer = false;
+        $isCorrectAnswer = true;
 
         $mockGame = \Mockery::mock('Game');
         $mockGame->shouldReceive('wrongAnswer')

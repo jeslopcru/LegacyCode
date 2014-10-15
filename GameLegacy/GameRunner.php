@@ -23,9 +23,9 @@ function run()
 function didSomeoneWin($aGame, $isCorrectAnswer)
 {
     if ($isCorrectAnswer) {
-        return $aGame->wrongAnswer();
+        return ! $aGame->wrongAnswer();
     } else {
-        return $aGame->wasCorrectlyAnswered();
+        return ! $aGame->wasCorrectlyAnswered();
     }
 }
 
