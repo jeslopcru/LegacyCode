@@ -23,8 +23,13 @@ class GameTest extends PHPUnit_Framework_TestCase
 
     public function testCreatedNewGameIsPlayable()
     {
+        $this->addEnoughPlayers();
+        $this->assertTrue($this->_game->isPlayable());
+    }
+
+    protected function addEnoughPlayers()
+    {
         $this->_game->add('player 1');
         $this->_game->add('player 2');
-        $this->assertTrue($this->_game->isPlayable());
     }
 }
