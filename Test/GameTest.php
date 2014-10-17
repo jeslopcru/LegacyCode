@@ -45,4 +45,21 @@ class GameTest extends PHPUnit_Framework_TestCase
             $this->_game->add('a Player');
         }
     }
+
+    public function testCanAddANewPlayer()
+    {
+        $this->assertEquals(0, count($this->_game->players));
+        $this->_game->add('a Player');
+        $this->assertEquals(1, count($this->_game->players));
+        $this->assertSetDefaultParametersForPlayer(1);
+    }
+
+    protected function assertSetDefaultParametersForPlayer($playerId)
+    {
+        $this->assertEquals(0, $this->_game->places[$playerId]);
+        $this->assertEquals(0, $this->_game->purses[$playerId]);
+        $this->assertFalse($this->_game->inPenaltyBox[$playerId]);
+    }
+
+
 }
