@@ -6,6 +6,8 @@ function echoln($string)
 
 class Game
 {
+    static $minimalNumberOfPlayer = 2;
+
     var $players;
     var $places;
     var $purses;
@@ -43,9 +45,7 @@ class Game
 
     function isPlayable()
     {
-        $minimalNumberOfPlayer = 2;
-
-        return ($this->howManyPlayers() >= $minimalNumberOfPlayer);
+        return ($this->howManyPlayers() >= Game::$minimalNumberOfPlayer);
     }
 
     function add($playerName)
