@@ -51,9 +51,7 @@ class Game
     function add($playerName)
     {
         array_push($this->players, $playerName);
-        $this->places[$this->howManyPlayers()] = 0;
-        $this->purses[$this->howManyPlayers()] = 0;
-        $this->inPenaltyBox[$this->howManyPlayers()] = false;
+        $this->setDefaultParameterForPlayer();
 
         echoln($playerName . " was added");
         echoln("They are player number " . count($this->players));
@@ -254,6 +252,13 @@ class Game
     protected function shoudResetCurrentPlayer()
     {
         return $this->currentPlayer == count($this->players);
+    }
+
+    protected function setDefaultParameterForPlayer()
+    {
+        $this->places[$this->howManyPlayers()] = 0;
+        $this->purses[$this->howManyPlayers()] = 0;
+        $this->inPenaltyBox[$this->howManyPlayers()] = false;
     }
 }
 
