@@ -23,17 +23,6 @@ class GameTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($this->_game->isPlayable());
     }
 
-    public function testCreatedNewGameIsPlayable()
-    {
-        $this->addEnoughPlayers();
-        $this->assertTrue($this->_game->isPlayable());
-    }
-
-    protected function addEnoughPlayers()
-    {
-        $this->addALotOfPlayers(Game::$minimalNumberOfPlayer);
-    }
-
     protected function addInsufficientPlayers()
     {
         $this->addALotOfPlayers(Game::$minimalNumberOfPlayer - 1);
@@ -44,6 +33,17 @@ class GameTest extends PHPUnit_Framework_TestCase
         for ($i = 0; $i < $numberOfPlayers; $i++) {
             $this->_game->add('a Player');
         }
+    }
+
+    public function testCreatedNewGameIsPlayable()
+    {
+        $this->addEnoughPlayers();
+        $this->assertTrue($this->_game->isPlayable());
+    }
+
+    protected function addEnoughPlayers()
+    {
+        $this->addALotOfPlayers(Game::$minimalNumberOfPlayer);
     }
 
     public function testCanAddANewPlayer()
