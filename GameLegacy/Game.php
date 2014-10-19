@@ -7,6 +7,8 @@ function echoln($string)
 class Game
 {
     static $minimalNumberOfPlayer = 2;
+    static $numberOfScoreToWin = 6;
+
 
     var $players;
     var $places;
@@ -177,7 +179,7 @@ class Game
                     . " Gold Coins."
                 );
 
-                $winner = $this->didPlayerWin();
+                $winner = $this->didNotPlayerWin();
                 $this->currentPlayer++;
                 if ($this->shoudResetCurrentPlayer()) {
                     $this->currentPlayer = 0;
@@ -205,7 +207,7 @@ class Game
                 . " Gold Coins."
             );
 
-            $winner = $this->didPlayerWin();
+            $winner = $this->didNotPlayerWin();
             $this->currentPlayer++;
             if ($this->shoudResetCurrentPlayer()) {
                 $this->currentPlayer = 0;
@@ -230,11 +232,9 @@ class Game
     }
 
 
-    function didPlayerWin()
+    function didNotPlayerWin()
     {
-        $winningScore = 6;
-
-        return !($this->purses[$this->currentPlayer] == $winningScore);
+        return !($this->purses[$this->currentPlayer] == Game::$numberOfScoreToWin);
     }
 
     protected function isOdd($roll)

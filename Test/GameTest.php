@@ -61,5 +61,11 @@ class GameTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($this->_game->inPenaltyBox[$playerId]);
     }
 
+    public function testPlayerNotWinsWithTheCorrectNumberOfScore()
+    {
+        $this->_game->currentPlayer = 0;
+        $this->_game->purses[0] = Game::$numberOfScoreToWin;
+        $this->assertFalse($this->_game->didNotPlayerWin());
+    }
 
 }
