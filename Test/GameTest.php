@@ -68,4 +68,20 @@ class GameTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($this->_game->didNotPlayerWin());
     }
 
+    public function testWhenAPlayerEntersAWrongAnswerItIsSentToThePenaltyBox()
+    {
+        $this->_game->add('A player');
+        $this->_game->currentPlayer = 0;
+        $this->_game->wrongAnswer();
+        $this->assertTrue($this->_game->inPenaltyBox[0]);
+        $this->assertEquals(0, $this->_game->currentPlayer);
+    }
+
+    public function testCurrentPlayerIsNotResetAfterWrongAnswerIfOtherPlayersDidNotYetPlay()
+    {
+        $this->addALotOfPlayers(2);
+        $this->_game->currentPlayer = 0;
+        $this->_game->wrongAnswer();
+        $this->assertEquals(1, $this->_game->currentPlayer);
+    }
 }
