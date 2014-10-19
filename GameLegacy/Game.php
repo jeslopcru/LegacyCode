@@ -6,6 +6,10 @@ function echoln($string)
 
 class Game
 {
+    static $minimalNumberOfPlayer = 2;
+    static $numberOfScoreToWin = 6;
+
+
     var $players;
     var $places;
     var $purses;
@@ -43,17 +47,13 @@ class Game
 
     function isPlayable()
     {
-        $minimalNumberOfPlayer = 2;
-
-        return ($this->howManyPlayers() >= $minimalNumberOfPlayer);
+        return ($this->howManyPlayers() >= Game::$minimalNumberOfPlayer);
     }
 
     function add($playerName)
     {
         array_push($this->players, $playerName);
-        $this->places[$this->howManyPlayers()] = 0;
-        $this->purses[$this->howManyPlayers()] = 0;
-        $this->inPenaltyBox[$this->howManyPlayers()] = false;
+        $this->setDefaultParameterForPlayer($this->howManyPlayers());
 
         echoln($playerName . " was added");
         echoln("They are player number " . count($this->players));
@@ -179,7 +179,7 @@ class Game
                     . " Gold Coins."
                 );
 
-                $winner = $this->didPlayerWin();
+                $winner = $this->didNotPlayerWin();
                 $this->currentPlayer++;
                 if ($this->shoudResetCurrentPlayer()) {
                     $this->currentPlayer = 0;
@@ -207,7 +207,7 @@ class Game
                 . " Gold Coins."
             );
 
-            $winner = $this->didPlayerWin();
+            $winner = $this->didNotPlayerWin();
             $this->currentPlayer++;
             if ($this->shoudResetCurrentPlayer()) {
                 $this->currentPlayer = 0;
@@ -232,11 +232,9 @@ class Game
     }
 
 
-    function didPlayerWin()
+    function didNotPlayerWin()
     {
-        $winningScore = 6;
-
-        return !($this->purses[$this->currentPlayer] == $winningScore);
+        return !($this->purses[$this->currentPlayer] == Game::$numberOfScoreToWin);
     }
 
     protected function isOdd($roll)
@@ -254,6 +252,13 @@ class Game
     protected function shoudResetCurrentPlayer()
     {
         return $this->currentPlayer == count($this->players);
+    }
+
+    protected function setDefaultParameterForPlayer($playerId)
+    {
+        $this->places[$playerId] = 0;
+        $this->purses[$playerId] = 0;
+        $this->inPenaltyBox[$playerId] = false;
     }
 }
 
