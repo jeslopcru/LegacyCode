@@ -66,17 +66,17 @@ class Game
         return count($this->players);
     }
 
-    function  roll($roll)
+    function  roll($rolledNumber)
     {
         echoln($this->players[$this->currentPlayer] . " is the current player");
-        echoln("They have rolled a " . $roll);
+        echoln("They have rolled a " . $rolledNumber);
         $boardSize = 12;
         if ($this->inPenaltyBox[$this->currentPlayer]) {
-            if ($this->isOdd($roll)) {
+            if ($this->isOdd($rolledNumber)) {
                 $this->isGettingOutOfPenaltyBox = true;
 
                 echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
-                $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
+                $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $rolledNumber;
                 if ($this->playerShouldStartANewLap()) {
                     $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - $boardSize;
                 }
@@ -95,7 +95,7 @@ class Game
 
         } else {
 
-            $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
+            $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $rolledNumber;
             if ($this->playerShouldStartANewLap()) {
                 $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - $boardSize;
             }
