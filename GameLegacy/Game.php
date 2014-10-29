@@ -94,18 +94,9 @@ class Game
             }
 
         } else {
-
-            $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $rolledNumber;
-            if ($this->playerShouldStartANewLap()) {
-                $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - $boardSize;
-            }
-
-            echoln(
-                $this->players[$this->currentPlayer]
-                . "'s new location is "
-                . $this->places[$this->currentPlayer]
-            );
-            echoln("The category is " . $this->currentCategory());
+            $this->movePlayer($rolledNumber, $boardSize);
+            $this->displayPlayerNewLocation();
+            $this->displayCurrentCategory();
             $this->askQuestion();
         }
 
@@ -259,6 +250,28 @@ class Game
         $this->places[$playerId] = 0;
         $this->purses[$playerId] = 0;
         $this->inPenaltyBox[$playerId] = false;
+    }
+
+    protected function movePlayer($rolledNumber, $boardSize)
+    {
+        $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $rolledNumber;
+        if ($this->playerShouldStartANewLap()) {
+            $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - $boardSize;
+        }
+    }
+
+    protected function displayPlayerNewLocation()
+    {
+        echoln(
+            $this->players[$this->currentPlayer]
+            . "'s new location is "
+            . $this->places[$this->currentPlayer]
+        );
+    }
+
+    protected function displayCurrentCategory()
+    {
+        echoln("The category is " . $this->currentCategory());
     }
 }
 
