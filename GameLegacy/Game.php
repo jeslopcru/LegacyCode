@@ -71,16 +71,10 @@ class Game
         $this->displayStatusAfterRoll($rolledNumber);
 
         if ($this->inPenaltyBox[$this->currentPlayer]) {
-            if ($this->isOdd($rolledNumber)) {
-                $this->getPlayerOutOfPenaltyBoxAndPlayNextMove($rolledNumber);
-            } else {
-                $this->keepPlayerInPenaltyBox();
-            }
-
+            $this->playNextMoveForPlayerInPenaltyBox($rolledNumber);
         } else {
             $this->playNextMove($rolledNumber);
         }
-
     }
 
     function  askQuestion()
@@ -303,6 +297,15 @@ class Game
         $this->displayPlayerNewLocation();
         $this->displayCurrentCategory();
         $this->askQuestion();
+    }
+
+    protected function playNextMoveForPlayerInPenaltyBox($rolledNumber)
+    {
+        if ($this->isOdd($rolledNumber)) {
+            $this->getPlayerOutOfPenaltyBoxAndPlayNextMove($rolledNumber);
+        } else {
+            $this->keepPlayerInPenaltyBox();
+        }
     }
 }
 
