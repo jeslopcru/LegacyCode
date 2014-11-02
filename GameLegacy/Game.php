@@ -72,23 +72,13 @@ class Game
 
         if ($this->inPenaltyBox[$this->currentPlayer]) {
             if ($this->isOdd($rolledNumber)) {
-                $this->isGettingOutOfPenaltyBox = true;
-
-                $this->displayPlayerGettingOutOfPenaltyBox();
-                $this->movePlayer($rolledNumber);
-                $this->displayPlayerNewLocation();
-                $this->displayCurrentCategory();
-                $this->askQuestion();
+                $this->getPlayerOutOfPenaltyBoxAndPlayNextMove($rolledNumber);
             } else {
-                $this->displayPlayerStaysInPenaltyBox();
-                $this->isGettingOutOfPenaltyBox = false;
+                $this->keepPlayerInPenaltyBox();
             }
 
         } else {
-            $this->movePlayer($rolledNumber);
-            $this->displayPlayerNewLocation();
-            $this->displayCurrentCategory();
-            $this->askQuestion();
+            $this->playNextMove($rolledNumber);
         }
 
     }
@@ -291,6 +281,28 @@ class Game
     {
         $this->displayCurrentPlayer();
         $this->displayRolledNumber($rolledNumber);
+    }
+
+    protected function getPlayerOutOfPenaltyBoxAndPlayNextMove($rolledNumber)
+    {
+        $this->isGettingOutOfPenaltyBox = true;
+
+        $this->displayPlayerGettingOutOfPenaltyBox();
+        $this->playNextMove($rolledNumber);
+    }
+
+    protected function keepPlayerInPenaltyBox()
+    {
+        $this->displayPlayerStaysInPenaltyBox();
+        $this->isGettingOutOfPenaltyBox = false;
+    }
+
+    protected function playNextMove($rolledNumber)
+    {
+        $this->movePlayer($rolledNumber);
+        $this->displayPlayerNewLocation();
+        $this->displayCurrentCategory();
+        $this->askQuestion();
     }
 }
 
