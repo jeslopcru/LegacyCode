@@ -70,23 +70,16 @@ class Game
     {
         echoln($this->players[$this->currentPlayer] . " is the current player");
         echoln("They have rolled a " . $rolledNumber);
+
         $boardSize = 12;
         if ($this->inPenaltyBox[$this->currentPlayer]) {
             if ($this->isOdd($rolledNumber)) {
                 $this->isGettingOutOfPenaltyBox = true;
 
                 echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
-                $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $rolledNumber;
-                if ($this->playerShouldStartANewLap()) {
-                    $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - $boardSize;
-                }
-
-                echoln(
-                    $this->players[$this->currentPlayer]
-                    . "'s new location is "
-                    . $this->places[$this->currentPlayer]
-                );
-                echoln("The category is " . $this->currentCategory());
+                $this->movePlayer($rolledNumber, $boardSize);
+                $this->displayPlayerNewLocation();
+                $this->displayCurrentCategory();
                 $this->askQuestion();
             } else {
                 echoln($this->players[$this->currentPlayer] . " is not getting out of the penalty box");
