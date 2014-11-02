@@ -11,3 +11,5 @@ Refactoring a PHP Legacy code application without tests.
 - First Output Test -> Create first test save the output to a file
 - Constant and magic string -> Autoload and extract variables.
 - Complex Conditional -> To be simple
+- Game testeable methods -> Simple Tests 
+- Complex methods -> difficult tests

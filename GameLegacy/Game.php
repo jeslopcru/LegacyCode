@@ -66,49 +66,15 @@ class Game
         return count($this->players);
     }
 
-    function  roll($roll)
+    function  roll($rolledNumber)
     {
-        echoln($this->players[$this->currentPlayer] . " is the current player");
-        echoln("They have rolled a " . $roll);
-        $boardSize = 12;
+        $this->displayStatusAfterRoll($rolledNumber);
+
         if ($this->inPenaltyBox[$this->currentPlayer]) {
-            if ($this->isOdd($roll)) {
-                $this->isGettingOutOfPenaltyBox = true;
-
-                echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
-                $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
-                if ($this->playerShouldStartANewLap()) {
-                    $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - $boardSize;
-                }
-
-                echoln(
-                    $this->players[$this->currentPlayer]
-                    . "'s new location is "
-                    . $this->places[$this->currentPlayer]
-                );
-                echoln("The category is " . $this->currentCategory());
-                $this->askQuestion();
-            } else {
-                echoln($this->players[$this->currentPlayer] . " is not getting out of the penalty box");
-                $this->isGettingOutOfPenaltyBox = false;
-            }
-
+            $this->playNextMoveForPlayerInPenaltyBox($rolledNumber);
         } else {
-
-            $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
-            if ($this->playerShouldStartANewLap()) {
-                $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - $boardSize;
-            }
-
-            echoln(
-                $this->players[$this->currentPlayer]
-                . "'s new location is "
-                . $this->places[$this->currentPlayer]
-            );
-            echoln("The category is " . $this->currentCategory());
-            $this->askQuestion();
+            $this->playNextMove($rolledNumber);
         }
-
     }
 
     function  askQuestion()
@@ -259,6 +225,87 @@ class Game
         $this->places[$playerId] = 0;
         $this->purses[$playerId] = 0;
         $this->inPenaltyBox[$playerId] = false;
+    }
+
+    protected function movePlayer($rolledNumber)
+    {
+        $boardSize = 12;
+
+        $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $rolledNumber;
+        if ($this->playerShouldStartANewLap()) {
+            $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - $boardSize;
+        }
+    }
+
+    protected function displayPlayerNewLocation()
+    {
+        echoln(
+            $this->players[$this->currentPlayer]
+            . "'s new location is "
+            . $this->places[$this->currentPlayer]
+        );
+    }
+
+    protected function displayCurrentCategory()
+    {
+        echoln("The category is " . $this->currentCategory());
+    }
+
+    protected function displayCurrentPlayer()
+    {
+        echoln($this->players[$this->currentPlayer] . " is the current player");
+    }
+
+    protected function displayRolledNumber($rolledNumber)
+    {
+        echoln("They have rolled a " . $rolledNumber);
+    }
+
+    protected function displayPlayerGettingOutOfPenaltyBox()
+    {
+        echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
+    }
+
+    protected function displayPlayerStaysInPenaltyBox()
+    {
+        echoln($this->players[$this->currentPlayer] . " is not getting out of the penalty box");
+    }
+
+    protected function displayStatusAfterRoll($rolledNumber)
+    {
+        $this->displayCurrentPlayer();
+        $this->displayRolledNumber($rolledNumber);
+    }
+
+    protected function getPlayerOutOfPenaltyBoxAndPlayNextMove($rolledNumber)
+    {
+        $this->isGettingOutOfPenaltyBox = true;
+
+        $this->displayPlayerGettingOutOfPenaltyBox();
+        $this->playNextMove($rolledNumber);
+    }
+
+    protected function keepPlayerInPenaltyBox()
+    {
+        $this->displayPlayerStaysInPenaltyBox();
+        $this->isGettingOutOfPenaltyBox = false;
+    }
+
+    protected function playNextMove($rolledNumber)
+    {
+        $this->movePlayer($rolledNumber);
+        $this->displayPlayerNewLocation();
+        $this->displayCurrentCategory();
+        $this->askQuestion();
+    }
+
+    protected function playNextMoveForPlayerInPenaltyBox($rolledNumber)
+    {
+        if ($this->isOdd($rolledNumber)) {
+            $this->getPlayerOutOfPenaltyBoxAndPlayNextMove($rolledNumber);
+        } else {
+            $this->keepPlayerInPenaltyBox();
+        }
     }
 }
 
