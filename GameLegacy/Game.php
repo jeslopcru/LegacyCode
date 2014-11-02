@@ -68,8 +68,8 @@ class Game
 
     function  roll($rolledNumber)
     {
-        echoln($this->players[$this->currentPlayer] . " is the current player");
-        echoln("They have rolled a " . $rolledNumber);
+        $this->displayCurrentPlayer();
+        $this->displayRolledNumber($rolledNumber);
 
         $boardSize = 12;
         if ($this->inPenaltyBox[$this->currentPlayer]) {
@@ -265,6 +265,16 @@ class Game
     protected function displayCurrentCategory()
     {
         echoln("The category is " . $this->currentCategory());
+    }
+
+    protected function displayCurrentPlayer()
+    {
+        echoln($this->players[$this->currentPlayer] . " is the current player");
+    }
+
+    protected function displayRolledNumber($rolledNumber)
+    {
+        echoln("They have rolled a " . $rolledNumber);
     }
 }
 
