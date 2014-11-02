@@ -177,4 +177,37 @@ class GameTest extends PHPUnit_Framework_TestCase
 
         $this->assertCorrectCategoryForGivenPlaces($currentPlaces, $expectedCategory);
     }
+
+    public function testAPlayerWhoIsPenalizedAndRollsAnEvenNumberWillStayInThePenaltyBox()
+    {
+        $rolledNumber = 2;
+        $this->setAPlayerInPenaltyBox();
+        $this->_game->roll($rolledNumber);
+        $this->assertFalse($this->_game->isGettingOutOfPenaltyBox);
+    }
+
+    protected function setAPlayerInPenaltyBox()
+    {
+        $this->_game->currentPlayer = 0;
+        $this->_game->players[$this->_game->currentPlayer] = 'Jeff';
+        $this->_game->inPenaltyBox[$this->_game->currentPlayer] = true;
+    }
+
+    public function testPlayerGettingOutOfPenaltyNextPositionWithNewLap()
+    {
+        $currentPlace = 11;
+        $numberRequiredToGetOutOfPenaltyBox = 3;
+
+        $this->setAPlayerInPenaltyBox();
+        $this->setCurrentPlayersPosition($currentPlace);
+
+        $this->_game->roll($numberRequiredToGetOutOfPenaltyBox);
+        $this->assertEquals('2', $this->getCurrentPlayersPosition(), 'Player was expected at position 3');
+    }
+
+    protected function getCurrentPlayersPosition()
+    {
+        return $this->_game->places[$this->_game->currentPlayer];
+    }
+
 }
