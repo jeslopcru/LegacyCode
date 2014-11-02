@@ -68,26 +68,24 @@ class Game
 
     function  roll($rolledNumber)
     {
-        $this->displayCurrentPlayer();
-        $this->displayRolledNumber($rolledNumber);
+        $this->displayStatusAfterRoll($rolledNumber);
 
-        $boardSize = 12;
         if ($this->inPenaltyBox[$this->currentPlayer]) {
             if ($this->isOdd($rolledNumber)) {
                 $this->isGettingOutOfPenaltyBox = true;
 
-                echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
-                $this->movePlayer($rolledNumber, $boardSize);
+                $this->displayPlayerGettingOutOfPenaltyBox();
+                $this->movePlayer($rolledNumber);
                 $this->displayPlayerNewLocation();
                 $this->displayCurrentCategory();
                 $this->askQuestion();
             } else {
-                echoln($this->players[$this->currentPlayer] . " is not getting out of the penalty box");
+                $this->displayPlayerStaysInPenaltyBox();
                 $this->isGettingOutOfPenaltyBox = false;
             }
 
         } else {
-            $this->movePlayer($rolledNumber, $boardSize);
+            $this->movePlayer($rolledNumber);
             $this->displayPlayerNewLocation();
             $this->displayCurrentCategory();
             $this->askQuestion();
@@ -245,8 +243,10 @@ class Game
         $this->inPenaltyBox[$playerId] = false;
     }
 
-    protected function movePlayer($rolledNumber, $boardSize)
+    protected function movePlayer($rolledNumber)
     {
+        $boardSize = 12;
+
         $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $rolledNumber;
         if ($this->playerShouldStartANewLap()) {
             $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - $boardSize;
@@ -275,6 +275,22 @@ class Game
     protected function displayRolledNumber($rolledNumber)
     {
         echoln("They have rolled a " . $rolledNumber);
+    }
+
+    protected function displayPlayerGettingOutOfPenaltyBox()
+    {
+        echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
+    }
+
+    protected function displayPlayerStaysInPenaltyBox()
+    {
+        echoln($this->players[$this->currentPlayer] . " is not getting out of the penalty box");
+    }
+
+    protected function displayStatusAfterRoll($rolledNumber)
+    {
+        $this->displayCurrentPlayer();
+        $this->displayRolledNumber($rolledNumber);
     }
 }
 
