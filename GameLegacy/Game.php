@@ -4,6 +4,8 @@ function echoln($string)
     echo $string . "\n";
 }
 
+use GameLegacy\Display;
+
 class Game
 {
     static $minimalNumberOfPlayer = 2;
@@ -14,6 +16,8 @@ class Game
     var $places;
     var $purses;
     var $inPenaltyBox;
+
+    protected $display;
 
     var $popQuestions;
     var $scienceQuestions;
@@ -30,6 +34,9 @@ class Game
         $this->places = array(0);
         $this->purses = array(0);
         $this->inPenaltyBox = array(0);
+
+        $this->display = new Display();
+
 
         $this->popQuestions = array();
         $this->scienceQuestions = array();
