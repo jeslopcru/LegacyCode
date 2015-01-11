@@ -1,8 +1,4 @@
 <?php
-function echoln($string)
-{
-    echo $string . "\n";
-}
 
 use GameLegacy\Display;
 
@@ -62,8 +58,8 @@ class Game
         array_push($this->players, $playerName);
         $this->setDefaultParameterForPlayer($this->howManyPlayers());
 
-        echoln($playerName . " was added");
-        echoln("They are player number " . count($this->players));
+        $this->display->echoln($playerName . " was added");
+        $this->display->echoln("They are player number " . count($this->players));
 
         return true;
     }
@@ -87,16 +83,16 @@ class Game
     function  askQuestion()
     {
         if ($this->currentCategory() == "Pop") {
-            echoln(array_shift($this->popQuestions));
+            $this->display->echoln(array_shift($this->popQuestions));
         }
         if ($this->currentCategory() == "Science") {
-            echoln(array_shift($this->scienceQuestions));
+            $this->display->echoln(array_shift($this->scienceQuestions));
         }
         if ($this->currentCategory() == "Sports") {
-            echoln(array_shift($this->sportsQuestions));
+            $this->display->echoln(array_shift($this->sportsQuestions));
         }
         if ($this->currentCategory() == "Rock") {
-            echoln(array_shift($this->rockQuestions));
+            $this->display->echoln(array_shift($this->rockQuestions));
         }
     }
 
@@ -143,9 +139,9 @@ class Game
     {
         if ($this->inPenaltyBox[$this->currentPlayer]) {
             if ($this->isGettingOutOfPenaltyBox) {
-                echoln("Answer was correct!!!!");
+                $this->display->echoln("Answer was correct!!!!");
                 $this->purses[$this->currentPlayer]++;
-                echoln(
+                $this->display->echoln(
                     $this->players[$this->currentPlayer]
                     . " now has "
                     . $this->purses[$this->currentPlayer]
@@ -171,9 +167,9 @@ class Game
 
         } else {
 
-            echoln("Answer was corrent!!!!");
+            $this->display->echoln("Answer was corrent!!!!");
             $this->purses[$this->currentPlayer]++;
-            echoln(
+            $this->display->echoln(
                 $this->players[$this->currentPlayer]
                 . " now has "
                 . $this->purses[$this->currentPlayer]
@@ -192,8 +188,8 @@ class Game
 
     function wrongAnswer()
     {
-        echoln("Question was incorrectly answered");
-        echoln($this->players[$this->currentPlayer] . " was sent to the penalty box");
+        $this->display->echoln("Question was incorrectly answered");
+        $this->display->echoln($this->players[$this->currentPlayer] . " was sent to the penalty box");
         $this->inPenaltyBox[$this->currentPlayer] = true;
 
         $this->currentPlayer++;
@@ -246,7 +242,7 @@ class Game
 
     protected function displayPlayerNewLocation()
     {
-        echoln(
+        $this->display->echoln(
             $this->players[$this->currentPlayer]
             . "'s new location is "
             . $this->places[$this->currentPlayer]
@@ -255,27 +251,27 @@ class Game
 
     protected function displayCurrentCategory()
     {
-        echoln("The category is " . $this->currentCategory());
+        $this->display->echoln("The category is " . $this->currentCategory());
     }
 
     protected function displayCurrentPlayer()
     {
-        echoln($this->players[$this->currentPlayer] . " is the current player");
+        $this->display->echoln($this->players[$this->currentPlayer] . " is the current player");
     }
 
     protected function displayRolledNumber($rolledNumber)
     {
-        echoln("They have rolled a " . $rolledNumber);
+        $this->display->echoln("They have rolled a " . $rolledNumber);
     }
 
     protected function displayPlayerGettingOutOfPenaltyBox()
     {
-        echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
+        $this->display->echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
     }
 
     protected function displayPlayerStaysInPenaltyBox()
     {
-        echoln($this->players[$this->currentPlayer] . " is not getting out of the penalty box");
+        $this->display->echoln($this->players[$this->currentPlayer] . " is not getting out of the penalty box");
     }
 
     protected function displayStatusAfterRoll($rolledNumber)
