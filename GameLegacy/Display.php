@@ -84,4 +84,36 @@ class Display
             $this->echoln(array_shift($this->rockQuestions));
         }
     }
+
+    public function correctAnswer()
+    {
+        $this->echoln("Answer was correct!!!!");
+    }
+
+    public function correctAnswerWithTypo()
+    {
+        $this->echoln("Answer was corrent!!!!");
+    }
+
+    public function playerCoins($currentPlayer, $playerCoins)
+    {
+        $this->echoln($currentPlayer . " now has " . $playerCoins . " Gold Coins.");
+    }
+
+    public function incorrectAnswer()
+    {
+        $this->echoln("Question was incorrectly answered");
+    }
+
+    public function playerSentToPenaltyBox($currentPlayer)
+    {
+        $this->echoln($currentPlayer . " was sent to the penalty box");
+    }
+
+    public function playerAdded($playerName, $numberOfPlayers)
+    {
+        $this->echoln($playerName . " was added");
+        $this->echoln("They are player number " . $numberOfPlayers);
+    }
+
 } 
