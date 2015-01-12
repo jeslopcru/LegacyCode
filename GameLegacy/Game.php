@@ -12,10 +12,6 @@ class Game
     var $places;
     var $purses;
     var $inPenaltyBox;
-    var $popQuestions;
-    var $scienceQuestions;
-    var $sportsQuestions;
-    var $rockQuestions;
     var $currentPlayer = 0;
     var $isGettingOutOfPenaltyBox;
     protected $display;
@@ -30,19 +26,6 @@ class Game
 
         $this->display = new Display();
 
-
-        $this->popQuestions = array();
-        $this->scienceQuestions = array();
-        $this->sportsQuestions = array();
-        $this->rockQuestions = array();
-
-        $categorySize = 50;
-        for ($i = 0; $i < $categorySize; $i++) {
-            array_push($this->popQuestions, "Pop Question " . $i);
-            array_push($this->scienceQuestions, "Science Question " . $i);
-            array_push($this->sportsQuestions, "Sports Question " . $i);
-            array_push($this->rockQuestions, "Rock Question " . $i);
-        }
     }
 
     function isPlayable()
@@ -111,7 +94,7 @@ class Game
         $this->movePlayer($rolledNumber);
         $this->display->PlayerNewLocation($this->players[$this->currentPlayer], $this->places[$this->currentPlayer]);
         $this->display->CurrentCategory($this->currentCategory());
-        $this->askQuestion();
+        $this->display->askQuestion($this->currentCategory());
     }
 
     protected function movePlayer($rolledNumber)
@@ -167,22 +150,6 @@ class Game
         }
 
         return $rockCategory;
-    }
-
-    function  askQuestion()
-    {
-        if ($this->currentCategory() == "Pop") {
-            $this->display->echoln(array_shift($this->popQuestions));
-        }
-        if ($this->currentCategory() == "Science") {
-            $this->display->echoln(array_shift($this->scienceQuestions));
-        }
-        if ($this->currentCategory() == "Sports") {
-            $this->display->echoln(array_shift($this->sportsQuestions));
-        }
-        if ($this->currentCategory() == "Rock") {
-            $this->display->echoln(array_shift($this->rockQuestions));
-        }
     }
 
     protected function keepPlayerInPenaltyBox()
