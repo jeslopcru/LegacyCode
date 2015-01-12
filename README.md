@@ -13,3 +13,4 @@ Refactoring a PHP Legacy code application without tests.
 - Complex Conditional -> To be simple
 - Game testeable methods -> Simple Tests 
 - Complex methods -> difficult tests
+- presentation layer -> responsability separation

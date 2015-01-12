@@ -1,8 +1,6 @@
 <?php
-function echoln($string)
-{
-    echo $string . "\n";
-}
+
+use GameLegacy\Display;
 
 class Game
 {
@@ -14,14 +12,9 @@ class Game
     var $places;
     var $purses;
     var $inPenaltyBox;
-
-    var $popQuestions;
-    var $scienceQuestions;
-    var $sportsQuestions;
-    var $rockQuestions;
-
     var $currentPlayer = 0;
     var $isGettingOutOfPenaltyBox;
+    protected $display;
 
     function  __construct()
     {
@@ -31,18 +24,8 @@ class Game
         $this->purses = array(0);
         $this->inPenaltyBox = array(0);
 
-        $this->popQuestions = array();
-        $this->scienceQuestions = array();
-        $this->sportsQuestions = array();
-        $this->rockQuestions = array();
+        $this->display = new Display();
 
-        $categorySize = 50;
-        for ($i = 0; $i < $categorySize; $i++) {
-            array_push($this->popQuestions, "Pop Question " . $i);
-            array_push($this->scienceQuestions, "Science Question " . $i);
-            array_push($this->sportsQuestions, "Sports Question " . $i);
-            array_push($this->rockQuestions, "Rock Question " . $i);
-        }
     }
 
     function isPlayable()
@@ -50,25 +33,31 @@ class Game
         return ($this->howManyPlayers() >= Game::$minimalNumberOfPlayer);
     }
 
-    function add($playerName)
-    {
-        array_push($this->players, $playerName);
-        $this->setDefaultParameterForPlayer($this->howManyPlayers());
-
-        echoln($playerName . " was added");
-        echoln("They are player number " . count($this->players));
-
-        return true;
-    }
-
     function howManyPlayers()
     {
         return count($this->players);
     }
 
-    function  roll($rolledNumber)
+    function add($playerName)
     {
-        $this->displayStatusAfterRoll($rolledNumber);
+        array_push($this->players, $playerName);
+        $this->setDefaultParameterForPlayer($this->howManyPlayers());
+
+        $this->display->playerAdded($playerName, count($this->players));
+
+        return true;
+    }
+
+    protected function setDefaultParameterForPlayer($playerId)
+    {
+        $this->places[$playerId] = 0;
+        $this->purses[$playerId] = 0;
+        $this->inPenaltyBox[$playerId] = false;
+    }
+
+    function roll($rolledNumber)
+    {
+        $this->display->statusAfterRoll($rolledNumber, $this->players[$this->currentPlayer]);
 
         if ($this->inPenaltyBox[$this->currentPlayer]) {
             $this->playNextMoveForPlayerInPenaltyBox($rolledNumber);
@@ -77,22 +66,52 @@ class Game
         }
     }
 
-    function  askQuestion()
+    protected function playNextMoveForPlayerInPenaltyBox($rolledNumber)
     {
-        if ($this->currentCategory() == "Pop") {
-            echoln(array_shift($this->popQuestions));
-        }
-        if ($this->currentCategory() == "Science") {
-            echoln(array_shift($this->scienceQuestions));
-        }
-        if ($this->currentCategory() == "Sports") {
-            echoln(array_shift($this->sportsQuestions));
-        }
-        if ($this->currentCategory() == "Rock") {
-            echoln(array_shift($this->rockQuestions));
+        if ($this->isOdd($rolledNumber)) {
+            $this->getPlayerOutOfPenaltyBoxAndPlayNextMove($rolledNumber);
+        } else {
+            $this->keepPlayerInPenaltyBox();
         }
     }
 
+    protected function isOdd($roll)
+    {
+        return $roll % 2 != 0;
+    }
+
+    protected function getPlayerOutOfPenaltyBoxAndPlayNextMove($rolledNumber)
+    {
+        $this->isGettingOutOfPenaltyBox = true;
+
+        $this->display->PlayerGettingOutOfPenaltyBox($this->players[$this->currentPlayer]);
+        $this->playNextMove($rolledNumber);
+    }
+
+    protected function playNextMove($rolledNumber)
+    {
+        $this->movePlayer($rolledNumber);
+        $this->display->PlayerNewLocation($this->players[$this->currentPlayer], $this->places[$this->currentPlayer]);
+        $this->display->CurrentCategory($this->currentCategory());
+        $this->display->askQuestion($this->currentCategory());
+    }
+
+    protected function movePlayer($rolledNumber)
+    {
+        $boardSize = 12;
+
+        $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $rolledNumber;
+        if ($this->playerShouldStartANewLap()) {
+            $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - $boardSize;
+        }
+    }
+
+    protected function playerShouldStartANewLap()
+    {
+        $lastPositionOnTheBoard = 11;
+
+        return $this->places[$this->currentPlayer] > $lastPositionOnTheBoard;
+    }
 
     function currentCategory()
     {
@@ -132,17 +151,21 @@ class Game
         return $rockCategory;
     }
 
+    protected function keepPlayerInPenaltyBox()
+    {
+        $this->display->playerStaysInPenaltyBox($this->players[$this->currentPlayer]);
+        $this->isGettingOutOfPenaltyBox = false;
+    }
+
     function wasCorrectlyAnswered()
     {
         if ($this->inPenaltyBox[$this->currentPlayer]) {
             if ($this->isGettingOutOfPenaltyBox) {
-                echoln("Answer was correct!!!!");
+                $this->display->correctAnswer();
                 $this->purses[$this->currentPlayer]++;
-                echoln(
-                    $this->players[$this->currentPlayer]
-                    . " now has "
-                    . $this->purses[$this->currentPlayer]
-                    . " Gold Coins."
+                $this->display->playerCoins(
+                    $this->players[$this->currentPlayer],
+                    $this->purses[$this->currentPlayer]
                 );
 
                 $winner = $this->didNotPlayerWin();
@@ -160,17 +183,13 @@ class Game
 
                 return true;
             }
-
-
         } else {
 
-            echoln("Answer was corrent!!!!");
+            $this->display->correctAnswerWithTypo();
             $this->purses[$this->currentPlayer]++;
-            echoln(
-                $this->players[$this->currentPlayer]
-                . " now has "
-                . $this->purses[$this->currentPlayer]
-                . " Gold Coins."
+            $this->display->playerCoins(
+                $this->players[$this->currentPlayer],
+                $this->purses[$this->currentPlayer]
             );
 
             $winner = $this->didNotPlayerWin();
@@ -183,10 +202,20 @@ class Game
         }
     }
 
+    function didNotPlayerWin()
+    {
+        return !($this->purses[$this->currentPlayer] == Game::$numberOfScoreToWin);
+    }
+
+    protected function shoudResetCurrentPlayer()
+    {
+        return $this->currentPlayer == count($this->players);
+    }
+
     function wrongAnswer()
     {
-        echoln("Question was incorrectly answered");
-        echoln($this->players[$this->currentPlayer] . " was sent to the penalty box");
+        $this->display->incorrectAnswer();
+        $this->display->playerSentToPenaltyBox($this->players[$this->currentPlayer]);
         $this->inPenaltyBox[$this->currentPlayer] = true;
 
         $this->currentPlayer++;
@@ -195,117 +224,6 @@ class Game
         }
 
         return true;
-    }
-
-
-    function didNotPlayerWin()
-    {
-        return !($this->purses[$this->currentPlayer] == Game::$numberOfScoreToWin);
-    }
-
-    protected function isOdd($roll)
-    {
-        return $roll % 2 != 0;
-    }
-
-    protected function playerShouldStartANewLap()
-    {
-        $lastPositionOnTheBoard = 11;
-
-        return $this->places[$this->currentPlayer] > $lastPositionOnTheBoard;
-    }
-
-    protected function shoudResetCurrentPlayer()
-    {
-        return $this->currentPlayer == count($this->players);
-    }
-
-    protected function setDefaultParameterForPlayer($playerId)
-    {
-        $this->places[$playerId] = 0;
-        $this->purses[$playerId] = 0;
-        $this->inPenaltyBox[$playerId] = false;
-    }
-
-    protected function movePlayer($rolledNumber)
-    {
-        $boardSize = 12;
-
-        $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $rolledNumber;
-        if ($this->playerShouldStartANewLap()) {
-            $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - $boardSize;
-        }
-    }
-
-    protected function displayPlayerNewLocation()
-    {
-        echoln(
-            $this->players[$this->currentPlayer]
-            . "'s new location is "
-            . $this->places[$this->currentPlayer]
-        );
-    }
-
-    protected function displayCurrentCategory()
-    {
-        echoln("The category is " . $this->currentCategory());
-    }
-
-    protected function displayCurrentPlayer()
-    {
-        echoln($this->players[$this->currentPlayer] . " is the current player");
-    }
-
-    protected function displayRolledNumber($rolledNumber)
-    {
-        echoln("They have rolled a " . $rolledNumber);
-    }
-
-    protected function displayPlayerGettingOutOfPenaltyBox()
-    {
-        echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
-    }
-
-    protected function displayPlayerStaysInPenaltyBox()
-    {
-        echoln($this->players[$this->currentPlayer] . " is not getting out of the penalty box");
-    }
-
-    protected function displayStatusAfterRoll($rolledNumber)
-    {
-        $this->displayCurrentPlayer();
-        $this->displayRolledNumber($rolledNumber);
-    }
-
-    protected function getPlayerOutOfPenaltyBoxAndPlayNextMove($rolledNumber)
-    {
-        $this->isGettingOutOfPenaltyBox = true;
-
-        $this->displayPlayerGettingOutOfPenaltyBox();
-        $this->playNextMove($rolledNumber);
-    }
-
-    protected function keepPlayerInPenaltyBox()
-    {
-        $this->displayPlayerStaysInPenaltyBox();
-        $this->isGettingOutOfPenaltyBox = false;
-    }
-
-    protected function playNextMove($rolledNumber)
-    {
-        $this->movePlayer($rolledNumber);
-        $this->displayPlayerNewLocation();
-        $this->displayCurrentCategory();
-        $this->askQuestion();
-    }
-
-    protected function playNextMoveForPlayerInPenaltyBox($rolledNumber)
-    {
-        if ($this->isOdd($rolledNumber)) {
-            $this->getPlayerOutOfPenaltyBoxAndPlayNextMove($rolledNumber);
-        } else {
-            $this->keepPlayerInPenaltyBox();
-        }
     }
 }
 
