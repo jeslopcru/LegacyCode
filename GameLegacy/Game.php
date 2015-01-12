@@ -73,31 +73,15 @@ class Game
         $this->inPenaltyBox[$playerId] = false;
     }
 
-    function  roll($rolledNumber)
+    function roll($rolledNumber)
     {
-        $this->displayStatusAfterRoll($rolledNumber);
+        $this->display->statusAfterRoll($rolledNumber, $this->players[$this->currentPlayer]);
 
         if ($this->inPenaltyBox[$this->currentPlayer]) {
             $this->playNextMoveForPlayerInPenaltyBox($rolledNumber);
         } else {
             $this->playNextMove($rolledNumber);
         }
-    }
-
-    protected function displayStatusAfterRoll($rolledNumber)
-    {
-        $this->displayCurrentPlayer();
-        $this->displayRolledNumber($rolledNumber);
-    }
-
-    protected function displayCurrentPlayer()
-    {
-        $this->display->echoln($this->players[$this->currentPlayer] . " is the current player");
-    }
-
-    protected function displayRolledNumber($rolledNumber)
-    {
-        $this->display->echoln("They have rolled a " . $rolledNumber);
     }
 
     protected function playNextMoveForPlayerInPenaltyBox($rolledNumber)
@@ -118,20 +102,15 @@ class Game
     {
         $this->isGettingOutOfPenaltyBox = true;
 
-        $this->displayPlayerGettingOutOfPenaltyBox();
+        $this->display->PlayerGettingOutOfPenaltyBox($this->players[$this->currentPlayer]);
         $this->playNextMove($rolledNumber);
-    }
-
-    protected function displayPlayerGettingOutOfPenaltyBox()
-    {
-        $this->display->echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
     }
 
     protected function playNextMove($rolledNumber)
     {
         $this->movePlayer($rolledNumber);
-        $this->displayPlayerNewLocation();
-        $this->displayCurrentCategory();
+        $this->display->PlayerNewLocation($this->players[$this->currentPlayer], $this->places[$this->currentPlayer]);
+        $this->display->CurrentCategory($this->currentCategory());
         $this->askQuestion();
     }
 
@@ -150,20 +129,6 @@ class Game
         $lastPositionOnTheBoard = 11;
 
         return $this->places[$this->currentPlayer] > $lastPositionOnTheBoard;
-    }
-
-    protected function displayPlayerNewLocation()
-    {
-        $this->display->echoln(
-            $this->players[$this->currentPlayer]
-            . "'s new location is "
-            . $this->places[$this->currentPlayer]
-        );
-    }
-
-    protected function displayCurrentCategory()
-    {
-        $this->display->echoln("The category is " . $this->currentCategory());
     }
 
     function currentCategory()
@@ -222,13 +187,8 @@ class Game
 
     protected function keepPlayerInPenaltyBox()
     {
-        $this->displayPlayerStaysInPenaltyBox();
+        $this->display->playerStaysInPenaltyBox($this->players[$this->currentPlayer]);
         $this->isGettingOutOfPenaltyBox = false;
-    }
-
-    protected function displayPlayerStaysInPenaltyBox()
-    {
-        $this->display->echoln($this->players[$this->currentPlayer] . " is not getting out of the penalty box");
     }
 
     function wasCorrectlyAnswered()
