@@ -35,7 +35,7 @@ class Display
         $this->echoln($currentPlayer . " is the current player");
     }
 
-    function echoln($string)
+    protected function echoln($string)
     {
         echo $string . "\n";
     }
