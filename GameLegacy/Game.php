@@ -4,6 +4,10 @@ use GameLegacy\Display;
 
 class Game
 {
+    const WRONG_ANSWER_ID = 7;
+    const MIN_ANSWER_ID = 0;
+    const MAX_ANSWER_ID = 9;
+
     static $minimalNumberOfPlayer = 2;
     static $numberOfScoreToWin = 6;
 

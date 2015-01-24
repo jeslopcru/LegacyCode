@@ -18,12 +18,12 @@ class RunnerTest extends PHPUnit_Framework_TestCase
 
     protected function getGoodAnswerId()
     {
-        return array_diff(range(MIN_ANSWER_ID, MAX_ANSWER_ID), [WRONG_ANSWER_ID]);
+        return array_diff(range(Game::MIN_ANSWER_ID, Game::MAX_ANSWER_ID), [Game::WRONG_ANSWER_ID]);
     }
 
     function testCanFindWrongAnswer()
     {
-        $this->assertFalse($this->runner->isCorrectAnswer(WRONG_ANSWER_ID, WRONG_ANSWER_ID));
+        $this->assertFalse($this->runner->isCorrectAnswer(Game::WRONG_ANSWER_ID, Game::WRONG_ANSWER_ID));
     }
 
     protected function assertAnswersAreCorrectFor($correctAnswerIDs)

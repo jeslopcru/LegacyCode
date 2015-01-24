@@ -3,10 +3,6 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use GameLegacy\CLIDisplay;
 
-const WRONG_ANSWER_ID = 7;
-const MIN_ANSWER_ID = 0;
-const MAX_ANSWER_ID = 9;
-
 class Runner {
 
     function run()
@@ -34,9 +30,9 @@ class Runner {
         }
     }
 
-    function isCorrectAnswer($minAnswerId = MIN_ANSWER_ID, $maxAnswerId = MAX_ANSWER_ID)
+    function isCorrectAnswer($minAnswerId = Game::MIN_ANSWER_ID, $maxAnswerId = Game::MAX_ANSWER_ID)
     {
-        return rand($minAnswerId, $maxAnswerId) != WRONG_ANSWER_ID;
+        return rand($minAnswerId, $maxAnswerId) != Game::WRONG_ANSWER_ID;
     }
 
 }
