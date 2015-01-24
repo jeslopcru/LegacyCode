@@ -1,13 +1,16 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
+use GameLegacy\CLIDisplay;
+
 const WRONG_ANSWER_ID = 7;
 const MIN_ANSWER_ID = 0;
 const MAX_ANSWER_ID = 9;
 
 function run()
 {
-    $aGame = new Game();
+    $display = new CLIDisplay();
+    $aGame = new Game($display);
 
     $aGame->add("Chet");
     $aGame->add("Pat");
@@ -20,7 +23,7 @@ function run()
     } while (didSomeoneWin($aGame, isCorrectAnswer()));
 }
 
-function didSomeoneWin($aGame, $isCorrectAnswer)
+function didSomeoneWin(Game $aGame, $isCorrectAnswer)
 {
     if ($isCorrectAnswer) {
         return !$aGame->wrongAnswer();
