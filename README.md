@@ -14,4 +14,5 @@ Refactoring a PHP Legacy code application without tests.
 - Game testeable methods -> Simple Tests 
 - Complex methods -> difficult tests
 - Presentation layer -> responsability separation
-- Inverting dependecies -> creating interfaces 
+- Inyection dependecies -> creating interfaces
+- Analyzing Concerns -> Go to OOP and think about future work
