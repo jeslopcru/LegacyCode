@@ -1,8 +1,16 @@
 <?php
-include __DIR__ . '/../GameLegacy/GameRunner.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 class GameRunnerTest extends PHPUnit_Framework_TestCase
 {
+    /** @var  Runner */
+    protected $runner;
+
+    public function setUp()
+    {
+        $this->runner = new Runner();
+    }
+
     public function testCanFindCorrectAnswer()
     {
         $this->assertAnswersAreCorrectFor($this->getGoodAnswerId());
@@ -15,13 +23,13 @@ class GameRunnerTest extends PHPUnit_Framework_TestCase
 
     function testCanFindWrongAnswer()
     {
-        $this->assertFalse(isCorrectAnswer(WRONG_ANSWER_ID, WRONG_ANSWER_ID));
+        $this->assertFalse($this->runner->isCorrectAnswer(WRONG_ANSWER_ID, WRONG_ANSWER_ID));
     }
 
     protected function assertAnswersAreCorrectFor($correctAnswerIDs)
     {
         foreach ($correctAnswerIDs as $id) {
-            $this->assertTrue(isCorrectAnswer($id, $id));
+            $this->assertTrue($this->runner->isCorrectAnswer($id, $id));
         }
     }
 
@@ -33,7 +41,7 @@ class GameRunnerTest extends PHPUnit_Framework_TestCase
         $mockGame->shouldReceive('wasCorrectlyAnswered')
             ->andReturn($isCorrectAnswer);
 
-        $this->assertTrue(didSomeoneWin($mockGame, $isCorrectAnswer));
+        $this->assertTrue($this->runner->didSomeoneWin($mockGame, $isCorrectAnswer));
     }
 
     public function testWhenAWrongAnswerIsProvidedItCanTellIfThereIsNoWinner()
@@ -44,7 +52,7 @@ class GameRunnerTest extends PHPUnit_Framework_TestCase
         $mockGame->shouldReceive('wrongAnswer')
             ->andReturn($isCorrectAnswer);
 
-        $this->assertFalse(didSomeoneWin($mockGame, $isCorrectAnswer));
+        $this->assertFalse($this->runner->didSomeoneWin($mockGame, $isCorrectAnswer));
     }
 
     public function tearDown()
@@ -93,7 +101,7 @@ class GameRunnerTest extends PHPUnit_Framework_TestCase
     {
         ob_start();
         srand($seed);
-        run();
+        (new Runner())->run();
         $output = ob_get_contents();
         ob_end_clean();
 
