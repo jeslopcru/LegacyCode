@@ -213,4 +213,12 @@ class GameTest extends PHPUnit_Framework_TestCase
         return $this->_game->places[$this->_game->currentPlayer];
     }
 
+    public function testWasCorrectlyAnsweredAndGettingOutOfPenaltyBoxWhileBeingAWinner()
+    {
+        $this->setAPlayerInPenaltyBox();
+        $this->_game->isGettingOutOfPenaltyBox = true;
+        $this->_game->purses[$this->_game->currentPlayer] = Game::$numberOfScoreToWin;
+        $this->assertTrue($this->_game->wasCorrectlyAnswered());
+    }
+
 }
