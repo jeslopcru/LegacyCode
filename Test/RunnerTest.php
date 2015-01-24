@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-class GameRunnerTest extends PHPUnit_Framework_TestCase
+class RunnerTest extends PHPUnit_Framework_TestCase
 {
     /** @var  Runner */
     protected $runner;
