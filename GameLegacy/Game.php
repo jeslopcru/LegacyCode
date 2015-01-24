@@ -16,16 +16,14 @@ class Game
     var $isGettingOutOfPenaltyBox;
     protected $display;
 
-    function  __construct()
+    function  __construct(Display $display)
     {
-
         $this->players = array();
         $this->places = array(0);
         $this->purses = array(0);
         $this->inPenaltyBox = array(0);
 
-        $this->display = new Display();
-
+        $this->display = $display;
     }
 
     function isPlayable()

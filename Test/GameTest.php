@@ -8,7 +8,9 @@ class GameTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->_game = new Game();
+        $mockDipslay = $this->getMock('\GameLegacy\Display');
+
+        $this->_game = new Game($mockDipslay);
     }
 
     public function testCreateAGameOk()
@@ -90,15 +92,16 @@ class GameTest extends PHPUnit_Framework_TestCase
         $currentPlace = 2;
         $rolledNumber = 1;
 
+        $expectedResult = $currentPlace + $rolledNumber;
         $this->setAPlayerNotInPenaltyBox();
         $this->setCurrentPlayersPosition($currentPlace);
 
         $this->_game->roll($rolledNumber);
 
         $this->assertEquals(
-            $currentPlace + $rolledNumber,
+            $expectedResult,
             $this->_game->places[$this->_game->currentPlayer],
-            'The player was expected at position ' . $currentPlace + $rolledNumber
+            'The player was expected at position ' . $expectedResult
         );
     }
 
