@@ -221,4 +221,17 @@ class GameTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->_game->wasCorrectlyAnswered());
     }
 
+    public function testWasCorrectlyAnsweredAndGettingOutOfPenaltyBoxWhileNOTBeingAWinner()
+    {
+        $this->setAPlayerInPenaltyBox();
+        $this->_game->isGettingOutOfPenaltyBox = true;
+        $this->setCurrentPlayerNotAWinner();
+
+        $this->assertFalse($this->_game->wasCorrectlyAnswered());
+    }
+
+    protected function setCurrentPlayerNotAWinner()
+    {
+        $this->_game->purses[$this->_game->currentPlayer] = Game::$numberOfScoreToWin - 1;
+    }
 }
