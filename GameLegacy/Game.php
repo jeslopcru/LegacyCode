@@ -171,17 +171,11 @@ class Game
                 );
 
                 $notAWinner = $this->didNotPlayerWin();
-                $this->currentPlayer++;
-                if ($this->shoudResetCurrentPlayer()) {
-                    $this->currentPlayer = 0;
-                }
+                $this->selectNextPlayer();
 
                 return $notAWinner;
             } else {
-                $this->currentPlayer++;
-                if ($this->shoudResetCurrentPlayer()) {
-                    $this->currentPlayer = 0;
-                }
+                $this->selectNextPlayer();
 
                 return true;
             }
@@ -193,12 +187,8 @@ class Game
                 $this->players[$this->currentPlayer],
                 $this->purses[$this->currentPlayer]
             );
-
             $notAWinner = $this->didNotPlayerWin();
-            $this->currentPlayer++;
-            if ($this->shoudResetCurrentPlayer()) {
-                $this->currentPlayer = 0;
-            }
+            $this->selectNextPlayer();
 
             return $notAWinner;
         }
@@ -207,6 +197,14 @@ class Game
     function didNotPlayerWin()
     {
         return !($this->purses[$this->currentPlayer] == Game::$numberOfScoreToWin);
+    }
+
+    protected function selectNextPlayer()
+    {
+        $this->currentPlayer++;
+        if ($this->shoudResetCurrentPlayer()) {
+            $this->currentPlayer = 0;
+        }
     }
 
     protected function shoudResetCurrentPlayer()
