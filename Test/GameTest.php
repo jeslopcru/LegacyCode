@@ -217,8 +217,13 @@ class GameTest extends PHPUnit_Framework_TestCase
     {
         $this->setAPlayerInPenaltyBox();
         $this->_game->isGettingOutOfPenaltyBox = true;
-        $this->_game->purses[$this->_game->currentPlayer] = Game::$numberOfScoreToWin;
+        $this->setCurrentPlayerAWinner();
         $this->assertTrue($this->_game->wasCorrectlyAnswered());
+    }
+
+    protected function setCurrentPlayerAWinner()
+    {
+        $this->_game->purses[$this->_game->currentPlayer] = Game::$numberOfScoreToWin;
     }
 
     public function testWasCorrectlyAnsweredAndGettingOutOfPenaltyBoxWhileNOTBeingAWinner()
@@ -234,4 +239,38 @@ class GameTest extends PHPUnit_Framework_TestCase
     {
         $this->_game->purses[$this->_game->currentPlayer] = Game::$numberOfScoreToWin - 1;
     }
+
+    function testWasCorrectlyAnsweredAndStayingInThePenaltyBox()
+    {
+        $this->setAPlayerThatIsInThePenaltyBox();
+        $this->_game->add('Another Player');
+        $this->currentPlayerWillStayInPenaltyBox();
+        $this->assertTrue($this->_game->wasCorrectlyAnswered());
+    }
+
+    protected function setAPlayerThatIsInThePenaltyBox()
+    {
+        $this->_game->currentPlayer = 0;
+        $this->_game->players[$this->_game->currentPlayer] = 'John';
+        $this->_game->inPenaltyBox[$this->_game->currentPlayer] = true;
+    }
+
+    protected function currentPlayerWillStayInPenaltyBox()
+    {
+        $this->_game->isGettingOutOfPenaltyBox = false;
+    }
+
+    function testWasCorrectlyAnsweredAndNotInPenaltyBoxWhileBeingAWinner() {
+        $this->setAPlayerThatIsNotInThePenaltyBox();
+        $this->_game->add('Another Player');
+        $this->setCurrentPlayerAWinner();
+        $this->assertTrue($this->_game->wasCorrectlyAnswered());
+    }
+
+    protected function setAPlayerThatIsNotInThePenaltyBox() {
+        $this->_game->currentPlayer = 0;
+        $this->_game->players[$this->_game->currentPlayer] = 'John';
+        $this->_game->inPenaltyBox[$this->_game->currentPlayer] = false;
+    }
+
 }
