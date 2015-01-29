@@ -215,10 +215,24 @@ class GameTest extends PHPUnit_Framework_TestCase
 
     public function testWasCorrectlyAnsweredAndGettingOutOfPenaltyBoxWhileBeingAWinner()
     {
-        $this->setAPlayerInPenaltyBox();
-        $this->_game->isGettingOutOfPenaltyBox = true;
+        $this->setAPlayerThatIsInThePenaltyBox();
+        $this->_game->add('Another Player');
+        $this->currentPlayerWillLeavePenaltyBox();
         $this->setCurrentPlayerAWinner();
+
         $this->assertTrue($this->_game->wasCorrectlyAnswered());
+    }
+
+    protected function setAPlayerThatIsInThePenaltyBox()
+    {
+        $this->_game->currentPlayer = 0;
+        $this->_game->players[$this->_game->currentPlayer] = 'John';
+        $this->_game->inPenaltyBox[$this->_game->currentPlayer] = true;
+    }
+
+    protected function currentPlayerWillLeavePenaltyBox()
+    {
+        $this->_game->isGettingOutOfPenaltyBox = true;
     }
 
     protected function setCurrentPlayerAWinner()
@@ -229,7 +243,7 @@ class GameTest extends PHPUnit_Framework_TestCase
     public function testWasCorrectlyAnsweredAndGettingOutOfPenaltyBoxWhileNOTBeingAWinner()
     {
         $this->setAPlayerInPenaltyBox();
-        $this->_game->isGettingOutOfPenaltyBox = true;
+        $this->currentPlayerWillLeavePenaltyBox();
         $this->setCurrentPlayerNotAWinner();
 
         $this->assertFalse($this->_game->wasCorrectlyAnswered());
@@ -246,13 +260,6 @@ class GameTest extends PHPUnit_Framework_TestCase
         $this->_game->add('Another Player');
         $this->currentPlayerWillStayInPenaltyBox();
         $this->assertTrue($this->_game->wasCorrectlyAnswered());
-    }
-
-    protected function setAPlayerThatIsInThePenaltyBox()
-    {
-        $this->_game->currentPlayer = 0;
-        $this->_game->players[$this->_game->currentPlayer] = 'John';
-        $this->_game->inPenaltyBox[$this->_game->currentPlayer] = true;
     }
 
     protected function currentPlayerWillStayInPenaltyBox()
