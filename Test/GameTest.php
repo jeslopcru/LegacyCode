@@ -260,14 +260,16 @@ class GameTest extends PHPUnit_Framework_TestCase
         $this->_game->isGettingOutOfPenaltyBox = false;
     }
 
-    function testWasCorrectlyAnsweredAndNotInPenaltyBoxWhileBeingAWinner() {
+    function testWasCorrectlyAnsweredAndNotInPenaltyBoxWhileBeingAWinner()
+    {
         $this->setAPlayerThatIsNotInThePenaltyBox();
         $this->_game->add('Another Player');
         $this->setCurrentPlayerAWinner();
         $this->assertTrue($this->_game->wasCorrectlyAnswered());
     }
 
-    protected function setAPlayerThatIsNotInThePenaltyBox() {
+    protected function setAPlayerThatIsNotInThePenaltyBox()
+    {
         $this->_game->currentPlayer = 0;
         $this->_game->players[$this->_game->currentPlayer] = 'John';
         $this->_game->inPenaltyBox[$this->_game->currentPlayer] = false;
