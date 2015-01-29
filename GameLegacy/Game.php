@@ -170,13 +170,13 @@ class Game
                     $this->purses[$this->currentPlayer]
                 );
 
-                $winner = $this->didNotPlayerWin();
+                $notAWinner = $this->didNotPlayerWin();
                 $this->currentPlayer++;
                 if ($this->shoudResetCurrentPlayer()) {
                     $this->currentPlayer = 0;
                 }
 
-                return $winner;
+                return $notAWinner;
             } else {
                 $this->currentPlayer++;
                 if ($this->shoudResetCurrentPlayer()) {
@@ -194,13 +194,13 @@ class Game
                 $this->purses[$this->currentPlayer]
             );
 
-            $winner = $this->didNotPlayerWin();
+            $notAWinner = $this->didNotPlayerWin();
             $this->currentPlayer++;
             if ($this->shoudResetCurrentPlayer()) {
                 $this->currentPlayer = 0;
             }
 
-            return $winner;
+            return $notAWinner;
         }
     }
 
