@@ -164,7 +164,7 @@ class Game
         if ($this->inPenaltyBox[$this->currentPlayer]) {
             if ($this->isGettingOutOfPenaltyBox) {
                 $this->display->correctAnswer();
-                $this->purses[$this->currentPlayer]++;
+                $this->giveCurrentUserACoin();
                 $this->display->playerCoins(
                     $this->players[$this->currentPlayer],
                     $this->purses[$this->currentPlayer]
@@ -182,7 +182,7 @@ class Game
         } else {
 
             $this->display->correctAnswerWithTypo();
-            $this->purses[$this->currentPlayer]++;
+            $this->giveCurrentUserACoin();
             $this->display->playerCoins(
                 $this->players[$this->currentPlayer],
                 $this->purses[$this->currentPlayer]
@@ -192,6 +192,11 @@ class Game
 
             return $notAWinner;
         }
+    }
+
+    protected function giveCurrentUserACoin()
+    {
+        $this->purses[$this->currentPlayer]++;
     }
 
     function didNotPlayerWin()
