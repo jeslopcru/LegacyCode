@@ -162,36 +162,36 @@ class Game
     function wasCorrectlyAnswered()
     {
         if ($this->inPenaltyBox[$this->currentPlayer]) {
-            if ($this->isGettingOutOfPenaltyBox) {
-                $this->display->correctAnswer();
-                $this->giveCurrentUserACoin();
-                $this->display->playerCoins(
-                    $this->players[$this->currentPlayer],
-                    $this->purses[$this->currentPlayer]
-                );
-
-                $notAWinner = $this->didNotPlayerWin();
-                $this->selectNextPlayer();
-
-                return $notAWinner;
-            } else {
-                $this->selectNextPlayer();
-
-                return true;
-            }
-        } else {
-
-            $this->display->correctAnswerWithTypo();
-            $this->giveCurrentUserACoin();
-            $this->display->playerCoins(
-                $this->players[$this->currentPlayer],
-                $this->purses[$this->currentPlayer]
-            );
-            $notAWinner = $this->didNotPlayerWin();
-            $this->selectNextPlayer();
-
-            return $notAWinner;
+            return $this->getCorrectlyAnsweredForPlayersInPenaltyBox();
         }
+
+        return $this->getCorrectlyAnsweredForPlayersNotInPenaltyBox();
+
+    }
+
+    protected function getCorrectlyAnsweredForPlayersInPenaltyBox()
+    {
+        if ($this->isGettingOutOfPenaltyBox) {
+            $this->display->correctAnswer();
+
+            return $this->getCorrectlyAnsweredForAPlayer();
+        } else {
+            return $this->getCorrectlyAnsweredForPlayerStayingInPenaltyBox();
+        }
+    }
+
+    protected function getCorrectlyAnsweredForAPlayer()
+    {
+        $this->giveCurrentUserACoin();
+        $this->display->playerCoins(
+            $this->players[$this->currentPlayer],
+            $this->purses[$this->currentPlayer]
+        );
+
+        $notAWinner = $this->didNotPlayerWin();
+        $this->selectNextPlayer();
+
+        return $notAWinner;
     }
 
     protected function giveCurrentUserACoin()
@@ -215,6 +215,20 @@ class Game
     protected function shoudResetCurrentPlayer()
     {
         return $this->currentPlayer == count($this->players);
+    }
+
+    protected function getCorrectlyAnsweredForPlayerStayingInPenaltyBox()
+    {
+        $this->selectNextPlayer();
+
+        return true;
+    }
+
+    protected function getCorrectlyAnsweredForPlayersNotInPenaltyBox()
+    {
+        $this->display->correctAnswerWithTypo();
+
+        return $this->getCorrectlyAnsweredForAPlayer();
     }
 
     function wrongAnswer()
