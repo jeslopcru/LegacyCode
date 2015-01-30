@@ -235,14 +235,15 @@ class Game
     {
         $this->display->incorrectAnswer();
         $this->display->playerSentToPenaltyBox($this->players[$this->currentPlayer]);
-        $this->inPenaltyBox[$this->currentPlayer] = true;
-
-        $this->currentPlayer++;
-        if ($this->shoudResetCurrentPlayer()) {
-            $this->currentPlayer = 0;
-        }
+        $this->sendCurrentPlayerToPenaltyBox();
+        $this->selectNextPlayer();
 
         return true;
+    }
+
+    protected function sendCurrentPlayerToPenaltyBox()
+    {
+        $this->inPenaltyBox[$this->currentPlayer] = true;
     }
 }
 
