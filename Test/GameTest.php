@@ -213,4 +213,73 @@ class GameTest extends PHPUnit_Framework_TestCase
         return $this->_game->places[$this->_game->currentPlayer];
     }
 
+    public function testWasCorrectlyAnsweredAndGettingOutOfPenaltyBoxWhileBeingAWinner()
+    {
+        $this->setAPlayerThatIsInThePenaltyBox();
+        $this->_game->add('Another Player');
+        $this->currentPlayerWillLeavePenaltyBox();
+        $this->setCurrentPlayerAWinner();
+
+        $this->assertTrue($this->_game->wasCorrectlyAnswered());
+    }
+
+    protected function setAPlayerThatIsInThePenaltyBox()
+    {
+        $this->_game->currentPlayer = 0;
+        $this->_game->players[$this->_game->currentPlayer] = 'John';
+        $this->_game->inPenaltyBox[$this->_game->currentPlayer] = true;
+    }
+
+    protected function currentPlayerWillLeavePenaltyBox()
+    {
+        $this->_game->isGettingOutOfPenaltyBox = true;
+    }
+
+    protected function setCurrentPlayerAWinner()
+    {
+        $this->_game->purses[$this->_game->currentPlayer] = Game::$numberOfScoreToWin;
+    }
+
+    public function testWasCorrectlyAnsweredAndGettingOutOfPenaltyBoxWhileNOTBeingAWinner()
+    {
+        $this->setAPlayerInPenaltyBox();
+        $this->currentPlayerWillLeavePenaltyBox();
+        $this->setCurrentPlayerNotAWinner();
+
+        $this->assertFalse($this->_game->wasCorrectlyAnswered());
+    }
+
+    protected function setCurrentPlayerNotAWinner()
+    {
+        $this->_game->purses[$this->_game->currentPlayer] = Game::$numberOfScoreToWin - 1;
+    }
+
+    function testWasCorrectlyAnsweredAndStayingInThePenaltyBox()
+    {
+        $this->setAPlayerThatIsInThePenaltyBox();
+        $this->_game->add('Another Player');
+        $this->currentPlayerWillStayInPenaltyBox();
+        $this->assertTrue($this->_game->wasCorrectlyAnswered());
+    }
+
+    protected function currentPlayerWillStayInPenaltyBox()
+    {
+        $this->_game->isGettingOutOfPenaltyBox = false;
+    }
+
+    function testWasCorrectlyAnsweredAndNotInPenaltyBoxWhileBeingAWinner()
+    {
+        $this->setAPlayerThatIsNotInThePenaltyBox();
+        $this->_game->add('Another Player');
+        $this->setCurrentPlayerAWinner();
+        $this->assertTrue($this->_game->wasCorrectlyAnswered());
+    }
+
+    protected function setAPlayerThatIsNotInThePenaltyBox()
+    {
+        $this->_game->currentPlayer = 0;
+        $this->_game->players[$this->_game->currentPlayer] = 'John';
+        $this->_game->inPenaltyBox[$this->_game->currentPlayer] = false;
+    }
+
 }

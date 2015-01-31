@@ -4,6 +4,10 @@ use GameLegacy\Display;
 
 class Game
 {
+    const WRONG_ANSWER_ID = 7;
+    const MIN_ANSWER_ID = 0;
+    const MAX_ANSWER_ID = 9;
+
     static $minimalNumberOfPlayer = 2;
     static $numberOfScoreToWin = 6;
 
@@ -158,46 +162,41 @@ class Game
     function wasCorrectlyAnswered()
     {
         if ($this->inPenaltyBox[$this->currentPlayer]) {
-            if ($this->isGettingOutOfPenaltyBox) {
-                $this->display->correctAnswer();
-                $this->purses[$this->currentPlayer]++;
-                $this->display->playerCoins(
-                    $this->players[$this->currentPlayer],
-                    $this->purses[$this->currentPlayer]
-                );
-
-                $winner = $this->didNotPlayerWin();
-                $this->currentPlayer++;
-                if ($this->shoudResetCurrentPlayer()) {
-                    $this->currentPlayer = 0;
-                }
-
-                return $winner;
-            } else {
-                $this->currentPlayer++;
-                if ($this->shoudResetCurrentPlayer()) {
-                    $this->currentPlayer = 0;
-                }
-
-                return true;
-            }
-        } else {
-
-            $this->display->correctAnswerWithTypo();
-            $this->purses[$this->currentPlayer]++;
-            $this->display->playerCoins(
-                $this->players[$this->currentPlayer],
-                $this->purses[$this->currentPlayer]
-            );
-
-            $winner = $this->didNotPlayerWin();
-            $this->currentPlayer++;
-            if ($this->shoudResetCurrentPlayer()) {
-                $this->currentPlayer = 0;
-            }
-
-            return $winner;
+            return $this->getCorrectlyAnsweredForPlayersInPenaltyBox();
         }
+
+        return $this->getCorrectlyAnsweredForPlayersNotInPenaltyBox();
+
+    }
+
+    protected function getCorrectlyAnsweredForPlayersInPenaltyBox()
+    {
+        if ($this->isGettingOutOfPenaltyBox) {
+            $this->display->correctAnswer();
+
+            return $this->getCorrectlyAnsweredForAPlayer();
+        } else {
+            return $this->getCorrectlyAnsweredForPlayerStayingInPenaltyBox();
+        }
+    }
+
+    protected function getCorrectlyAnsweredForAPlayer()
+    {
+        $this->giveCurrentUserACoin();
+        $this->display->playerCoins(
+            $this->players[$this->currentPlayer],
+            $this->purses[$this->currentPlayer]
+        );
+
+        $notAWinner = $this->didNotPlayerWin();
+        $this->selectNextPlayer();
+
+        return $notAWinner;
+    }
+
+    protected function giveCurrentUserACoin()
+    {
+        $this->purses[$this->currentPlayer]++;
     }
 
     function didNotPlayerWin()
@@ -205,23 +204,46 @@ class Game
         return !($this->purses[$this->currentPlayer] == Game::$numberOfScoreToWin);
     }
 
+    protected function selectNextPlayer()
+    {
+        $this->currentPlayer++;
+        if ($this->shoudResetCurrentPlayer()) {
+            $this->currentPlayer = 0;
+        }
+    }
+
     protected function shoudResetCurrentPlayer()
     {
         return $this->currentPlayer == count($this->players);
+    }
+
+    protected function getCorrectlyAnsweredForPlayerStayingInPenaltyBox()
+    {
+        $this->selectNextPlayer();
+
+        return true;
+    }
+
+    protected function getCorrectlyAnsweredForPlayersNotInPenaltyBox()
+    {
+        $this->display->correctAnswerWithTypo();
+
+        return $this->getCorrectlyAnsweredForAPlayer();
     }
 
     function wrongAnswer()
     {
         $this->display->incorrectAnswer();
         $this->display->playerSentToPenaltyBox($this->players[$this->currentPlayer]);
-        $this->inPenaltyBox[$this->currentPlayer] = true;
-
-        $this->currentPlayer++;
-        if ($this->shoudResetCurrentPlayer()) {
-            $this->currentPlayer = 0;
-        }
+        $this->sendCurrentPlayerToPenaltyBox();
+        $this->selectNextPlayer();
 
         return true;
+    }
+
+    protected function sendCurrentPlayerToPenaltyBox()
+    {
+        $this->inPenaltyBox[$this->currentPlayer] = true;
     }
 }
 
